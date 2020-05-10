@@ -1,18 +1,7 @@
 
 ## wp-local-dev-basic build guide 
 
-* spinning up 
-
-```
-docker-compose up -d --build
-
-[fli@192-168-1-4 easy-wordpress-docker]$ docker container ls
-CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
-dd27281da692        wordpress:latest               "docker-entrypoint.s…"   7 seconds ago       Up 5 seconds        0.0.0.0:8081->80/tcp     wordpress
-74aff79a32d8        phpmyadmin/phpmyadmin:latest   "/docker-entrypoint.…"   7 seconds ago       Up 5 seconds        0.0.0.0:8080->80/tcp     phpmyadmin
-1f58e8931e9b        mariadb:latest                 "docker-entrypoint.s…"   9 seconds ago       Up 8 seconds        0.0.0.0:3306->3306/tcp   mariadb
-[fli@192-168-1-4 easy-wordpress-docker]$ 
-```
+* spinning up `docker-compose up -d --build`
 
 * testing phpmyadmin can access mariadb at `localhost:8080` as both `root` and user `fen9li`
 
@@ -24,9 +13,7 @@ dd27281da692        wordpress:latest               "docker-entrypoint.s…"   7 
 
 ![phpmyadmin-04](images/phpmyadmin-04.png)
 
-* testing and installing wordpress at `localhost:8081`
-
-![wp-install-01](images/wp-install-01.png)
+* testing wordpress at `localhost:8081`
 
 | Key | Value |
 | --- | ----- |
@@ -36,15 +23,9 @@ dd27281da692        wordpress:latest               "docker-entrypoint.s…"   7 
 | Your Email | lifcn@yahoo.com |
 | Search Engine Visibility | untick |
 
-![wp-install-02](images/wp-install-02.png)
+![wp-restored-01](images/wp-restored-01.png)
 
-![wp-install-03](images/wp-install-03.png)
-
-![wp-install-04](images/wp-install-04.png)
-
-![wp-install-05](images/wp-install-05.png)
-
-![wp-install-06](images/wp-install-06.png)
+![wp-restored-02](images/wp-restored-02.png)
 
 ## exploring
 
@@ -52,10 +33,18 @@ dd27281da692        wordpress:latest               "docker-entrypoint.s…"   7 
 docker-compose stop
 docker-compose start
 
-[fli@192-168-1-4 easy-wordpress-docker]$ docker container ls --all
-CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS                          PORTS               NAMES
-c4ab55e8f7d0        wordpress:latest               "docker-entrypoint.s…"   About an hour ago   Exited (0) About a minute ago                       wordpress
-5cbdf52c23d9        phpmyadmin/phpmyadmin:latest   "/docker-entrypoint.…"   About an hour ago   Exited (0) About a minute ago                       phpmyadmin
-0211452970b4        mariadb:latest                 "docker-entrypoint.s…"   About an hour ago   Exited (0) 57 seconds ago                           mariadb
+[fli@192-168-1-4 easy-wordpress-docker]$ docker container ls
+CONTAINER ID        IMAGE                          COMMAND                  CREATED              STATUS              PORTS                    NAMES
+0b18738afc4e        phpmyadmin/phpmyadmin:latest   "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp     phpmyadmin
+b00ae69557fb        wordpress-web                  "docker-php-entrypoi…"   About a minute ago   Up About a minute   0.0.0.0:8081->80/tcp     wordpress-web
+9142f2953acd        wordpress-db                   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3306->3306/tcp   wordpress-db
 [fli@192-168-1-4 easy-wordpress-docker]$ 
+
+[fli@192-168-1-4 easy-wordpress-docker]$ docker exec -it b00 ls /var/www/html
+index.php        wp-blog-header.php    wp-cron.php        wp-mail.php
+license.txt      wp-comments-post.php  wp-includes        wp-settings.php
+readme.html      wp-config-sample.php  wp-links-opml.php  wp-signup.php
+wp-activate.php  wp-config.php         wp-load.php        wp-trackback.php
+wp-admin         wp-content            wp-login.php       xmlrpc.php
+[fli@192-168-1-4 easy-wordpress-docker]$  
 ```

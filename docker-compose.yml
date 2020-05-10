@@ -13,13 +13,16 @@ services:
   wordpress:
     depends_on:
       - mariadb
-    image: wordpress:latest
-    container_name: wordpress  
+    build: ./docker/web
+    image: wordpress-web
+    container_name: wordpress-web  
     restart: always
     env_file: .env
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ${PWD}/docker/web/html:/var/www/html
     networks:
       - backend
     ports:
@@ -41,8 +44,9 @@ services:
       - '8080:80'
 
   mariadb:
-    image: mariadb:latest
-    container_name: mariadb
+    build: ./docker/mariadb
+    image: wordpress-db
+    container_name: wordpress-db
     restart: always
     env_file: .env
     environment:
