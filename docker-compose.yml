@@ -9,6 +9,18 @@ networks:
     driver: bridge
 
 services:
+  wpcli:
+    depends_on:
+      - wordpress
+    build: ./docker/wpcli
+    image: wordpress-cli
+    container_name: wordpress-cli  
+    restart: always
+    volumes:
+      - ${PWD}/app:/sites
+    networks:
+      - backend
+    command: [ "sleep", "infinity"]
 
   wordpress:
     depends_on:
@@ -22,7 +34,7 @@ services:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: wordpress
     volumes:
-      - ${PWD}/docker/web/html:/var/www/html
+      - ${PWD}/app:/var/www/html
     networks:
       - backend
     ports:
